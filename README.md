@@ -1,74 +1,150 @@
+# 3_LaboratoryWork — библиотека шаблонов кода
 
-# my-first-extension README
+Третья лабораторная работа по ИСРПО. Расширение VS Code для сохранения и повторного использования алгоритмов.
 
-This is the README for your extension "my-first-extension". After writing up a brief description, we recommend including the following sections.
+## Возможности
 
-## Features
+- Сохранение выделенного кода с названием, категорией, языком и ключевыми словами.
+- Категории: сортировки, графы, динамическое программирование, структуры данных и собственные категории.
+- Быстрый поиск по названию, категории и ключевым словам.
+- Параметры `{{functionName}}`, `{{type}}` и любые другие именованные параметры.
+- Редактирование кода, названия, категории, ключевых слов и значений параметров.
+- Удаление с подтверждением; импорт и экспорт библиотеки в JSON.
+- Локальное хранение между перезапусками VS Code, независимо от открытого проекта.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Быстрый запуск
 
-For example if there is an image subfolder under your extension project workspace:
+Требуются VS Code 1.145.0 или новее, Node.js 24 LTS или новее и npm.
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Откройте папку проекта, содержащую `package.json`, в VS Code.
+2. Выполните в терминале:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+   ```bash
+   npm ci
+   npm run compile
+   ```
 
-## Requirements
+3. Нажмите F5 или «Запуск → Начать отладку», выбрав **Run Extension**.
+4. В новом окне **Extension Development Host** откройте файл кода.
+5. Нажмите Ctrl+Shift+P и введите **Шаблоны кода**.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+В macOS палитра команд открывается через Cmd+Shift+P, сохранение — Cmd+S.
+При запуске F5 задача `build-extension` автоматически выполняет обычную сборку.
 
-## Extension Settings
+Если у вас есть готовый VSIX: откройте «Расширения → … → Установить из VSIX» и выберите пакет. Для использования установленного пакета npm не нужен.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Сохранение и вставка
 
-For example:
+1. Выделите код в редакторе.
+2. Выполните **Шаблоны кода: Сохранить выделение** (также доступно в меню правой кнопки мыши).
+3. Введите название, выберите категорию или создайте свою, укажите ключевые слова через запятую.
+4. Если код содержит параметры, задайте для каждого подсказку и значение по умолчанию. Пустое значение допустимо.
+5. Поставьте курсор в нужный файл и выполните **Шаблоны кода: Найти шаблон** или **Вставить шаблон**.
+6. Введите название, категорию либо ключевое слово и нажмите Enter. Укажите значения параметров.
 
-This extension contributes the following settings:
+Код вставляется вместо основного выделения или в позицию основного курсора. Дополнительные курсоры не обрабатываются. Вставку можно отменить одним Ctrl+Z. Отмена любого диалога через Esc не меняет файл и библиотеку.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+**Выбрать категорию и вставить** сначала показывает список категорий, затем шаблоны только выбранной категории.
+Одинаковые названия разрешены в разных категориях. В одной категории названия должны отличаться (регистр не учитывается).
 
-## Known Issues
+## Параметризованный шаблон
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Пример кода для сохранения:
 
-## Release Notes
+```text
+function {{functionName}}(items: {{type}}[]): {{type}}[] {
+    return [...items];
+}
+```
 
-Users appreciate release notes as you update your extension.
+При сохранении можно указать:
 
-### 1.0.0
+| Параметр | Подсказка | По умолчанию |
+| --- | --- | --- |
+| functionName | Название функции | copyItems |
+| type | Тип элементов | number |
 
-Initial release of ...
+При вставке каждое значение запрашивается один раз и подставляется во все повторения соответствующего параметра. Имена параметров состоят из латинских букв, цифр и `_`, не начинаются с цифры. Значения подставляются как обычный текст: `$`, обратные слеши и другие метки внутри введённого значения не интерпретируются.
 
-### 1.0.1
+Чтобы вставить буквальный текст `{{name}}`, запишите в шаблоне `\{{name}}`. Обычные скобки в коде не меняются. Плагин не выполняет алгоритмы и не проверяет, подходит ли выбранный тип данных для конкретного кода.
 
-Fixed issue #.
+## Редактирование и удаление
 
-### 1.1.0
+Выполните **Шаблоны кода: Редактировать шаблон**, выберите шаблон и действие:
 
-Added features X, Y, and Z.
+- **Редактировать код** — код откроется в отдельной вкладке `template`. Нажмите Ctrl+S, чтобы сохранить изменения прямо в библиотеку. Вкладку не нужно сохранять в файл проекта.
+- **Переименовать** — изменить название.
+- **Изменить категорию** — переместить шаблон в существующую или новую категорию.
+- **Изменить ключевые слова** — обновить слова для поиска.
+- **Настроить параметры** — изменить подсказки и значения по умолчанию.
+- **Удалить** — удалить после подтверждения.
 
----
+После сохранения кода новые метки автоматически становятся параметрами. Подсказки и значения оставшихся параметров сохраняются, удалённые метки исчезают из списка параметров. Для новых параметров значения по умолчанию изначально пустые.
 
-## Following extension guidelines
+Отдельные команды **Переименовать шаблон** и **Удалить шаблон** также доступны в палитре. Собственные категории существуют, пока в них есть шаблоны.
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Импорт и экспорт
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+**Экспортировать библиотеку** предлагает выбрать JSON-файл и сохраняет все шаблоны вместе с категориями, ключевыми словами и параметрами.
 
-## Working with Markdown
+**Импортировать библиотеку** проверяет файл и предлагает:
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+- **Добавить новые шаблоны** — сохраняет существующие записи; совпадения по названию и категории пропускает. Повторный импорт того же файла не создаёт дубликаты.
+- **Заменить всю библиотеку** — заменяет все текущие записи после отдельного подтверждения. Пустая импортируемая библиотека очистит текущую.
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+Сначала сохраните или закройте изменённые вкладки шаблонов перед экспортом или полной заменой библиотеки. Некорректный JSON и неподдерживаемая версия формата не меняют существующие данные.
 
-## For more information
+Для переноса на другой компьютер экспортируйте файл, установите расширение на другом компьютере и импортируйте файл там. Библиотеки в разных профилях VS Code или средах WSL/SSH могут храниться отдельно; автоматическая синхронизация не включена.
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Ограничения: библиотека до 5 МБ, до 1000 шаблонов, код одного шаблона до 200000 символов, до 32 параметров и 50 ключевых слов.
 
-**Enjoy!**
-# 3_LaboratoryWork
-Третья лабораторная работа по ИСРПО
+## Готовые примеры
+
+Импортируйте `examples/algorithms.json` из исходного проекта. В файле четыре TypeScript-шаблона:
+
+1. Сортировка вставками.
+2. Обход графа в ширину (BFS).
+3. Числа Фибоначчи с `bigint`.
+4. Стек с настраиваемыми названием класса и типом элементов.
+
+Для `bigint` в проекте назначения нужен target ES2020 или новее.
+
+## Формат JSON
+
+```json
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "example-function",
+      "name": "Пустая функция",
+      "category": "Другое",
+      "keywords": ["функция"],
+      "language": "typescript",
+      "body": "function {{name}}() {}",
+      "parameters": [
+        { "name": "name", "label": "Название функции", "defaultValue": "solve" }
+      ]
+    }
+  ]
+}
+```
+
+## Проверки и структура проекта
+
+```bash
+npm run compile
+npm run test:unit
+npm test
+```
+
+`test:unit` проверяет хранение, параметры, импорт/экспорт и команды с имитацией диалогов VS Code. `npm test` запускает отдельный VS Code для проверки регистрации команд и сохранения виртуального документа; при необходимости скачивает тестовую версию редактора. Для установленного редактора можно задать переменную окружения `VSCODE_EXECUTABLE_PATH` с путём к исполняемому файлу VS Code. Тестовый профиль изолирован в `.vscode-test`.
+
+- `src/extension.ts` — команды, диалоги, вставка и импорт/экспорт.
+- `src/library.ts` — модель, проверка формата, подстановка параметров и хранилище.
+- `src/templateFileSystem.ts` — редактирование кода через вкладку и Ctrl+S.
+- `tests/` — автоматические проверки без графического интерфейса.
+- `src/test/` — проверки в Extension Development Host.
+- `examples/algorithms.json` — библиотека примеров.
+
+Библиотека сохраняется через `ExtensionContext.globalState` и не попадает в Git. Сборка находится в `dist/extension.js`; `dist`, `out`, `node_modules` и тестовые профили исключены из Git. Исходная команда Hello World сохранена.

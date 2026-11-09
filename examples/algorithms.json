@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "example-sort",
+      "name": "Сортировка вставками",
+      "category": "Сортировки",
+      "keywords": [
+        "сортировка",
+        "insertion",
+        "массив"
+      ],
+      "language": "typescript",
+      "body": "function {{functionName}}(values: number[]): number[] {\n    const result = [...values];\n    for (let i = 1; i < result.length; i++) {\n        const value = result[i];\n        let j = i - 1;\n        while (j >= 0 && result[j] > value) {\n            result[j + 1] = result[j];\n            j--;\n        }\n        result[j + 1] = value;\n    }\n    return result;\n}\n",
+      "parameters": [
+        {
+          "name": "functionName",
+          "label": "Название функции",
+          "defaultValue": "insertionSort"
+        }
+      ]
+    },
+    {
+      "id": "example-bfs",
+      "name": "Обход графа в ширину",
+      "category": "Графы",
+      "keywords": [
+        "bfs",
+        "обход",
+        "очередь"
+      ],
+      "language": "typescript",
+      "body": "function {{functionName}}(graph: Map<string, string[]>, start: string): string[] {\n    const visited = new Set<string>([start]);\n    const queue: string[] = [start];\n    for (let head = 0; head < queue.length; head++) {\n        for (const next of graph.get(queue[head]) ?? []) {\n            if (!visited.has(next)) {\n                visited.add(next);\n                queue.push(next);\n            }\n        }\n    }\n    return queue;\n}\n",
+      "parameters": [
+        {
+          "name": "functionName",
+          "label": "Название функции",
+          "defaultValue": "bfs"
+        }
+      ]
+    },
+    {
+      "id": "example-dp",
+      "name": "Числа Фибоначчи",
+      "category": "Динамическое программирование",
+      "keywords": [
+        "dp",
+        "fibonacci",
+        "фибоначчи"
+      ],
+      "language": "typescript",
+      "body": "function {{functionName}}(n: number): bigint {\n    if (!Number.isSafeInteger(n) || n < 0) {\n        throw new Error('n должно быть целым неотрицательным числом');\n    }\n    let previous = 0n;\n    let current = 1n;\n    for (let i = 0; i < n; i++) {\n        [previous, current] = [current, previous + current];\n    }\n    return previous;\n}\n",
+      "parameters": [
+        {
+          "name": "functionName",
+          "label": "Название функции",
+          "defaultValue": "fibonacci"
+        }
+      ]
+    },
+    {
+      "id": "example-stack",
+      "name": "Стек",
+      "category": "Структуры данных",
+      "keywords": [
+        "stack",
+        "lifo",
+        "стек"
+      ],
+      "language": "typescript",
+      "body": "class {{className}} {\n    private readonly items: {{type}}[] = [];\n\n    push(value: {{type}}): void {\n        this.items.push(value);\n    }\n\n    pop(): {{type}} | undefined {\n        return this.items.pop();\n    }\n\n    peek(): {{type}} | undefined {\n        return this.items[this.items.length - 1];\n    }\n\n    get size(): number {\n        return this.items.length;\n    }\n}\n",
+      "parameters": [
+        {
+          "name": "className",
+          "label": "Название класса",
+          "defaultValue": "Stack"
+        },
+        {
+          "name": "type",
+          "label": "Тип элементов",
+          "defaultValue": "number"
+        }
+      ]
+    }
+  ]
+}

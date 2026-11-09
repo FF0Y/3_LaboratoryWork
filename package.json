@@ -1,23 +1,79 @@
 {
   "name": "my-first-extension",
-  "displayName": "my-first-extension",
-  "description": "My first VS Code extension",
-  "version": "0.0.1",
+  "displayName": "Шаблоны кода — библиотека алгоритмов",
+  "description": "Сохранение алгоритмов по категориям, поиск, параметры, редактирование и импорт/экспорт JSON.",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.145.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onFileSystem:algorithm-template"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
+        "command": "my-first-extension.saveTemplate",
+        "title": "Сохранить выделение",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.insertTemplate",
+        "title": "Вставить шаблон",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.searchTemplates",
+        "title": "Найти шаблон",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.browseCategories",
+        "title": "Выбрать категорию и вставить",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.editTemplate",
+        "title": "Редактировать шаблон",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.renameTemplate",
+        "title": "Переименовать шаблон",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.deleteTemplate",
+        "title": "Удалить шаблон",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.exportTemplates",
+        "title": "Экспортировать библиотеку",
+        "category": "Шаблоны кода"
+      },
+      {
+        "command": "my-first-extension.importTemplates",
+        "title": "Импортировать библиотеку",
+        "category": "Шаблоны кода"
+      },
+      {
         "command": "my-first-extension.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "my-first-extension.saveTemplate",
+          "when": "editorHasSelection",
+          "group": "1_modification@10"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -31,7 +87,8 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "test:unit": "node tests/run-unit.cjs"
   },
   "devDependencies": {
     "@types/vscode": "^1.145.0",
@@ -48,5 +105,10 @@
   "overrides": {
     "diff": "^8.0.4",
     "serialize-javascript": "^7.0.6"
+  },
+  "publisher": "FF0Y",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FF0Y/3_LaboratoryWork.git"
   }
 }
